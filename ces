@@ -1,0 +1,73 @@
+#!/usr/bin/python
+#coding: utf-8
+
+import sys, registrador, verificador, status
+
+if len(sys.argv) <= 1:
+
+	print 'Informe algum parâmetro!\nPara ajuda digite:\n./ces -h '
+
+else:
+
+	arg1 = sys.argv[1]
+	if len(sys.argv) > 2:
+		arg2 = int(sys.argv[2])
+
+
+	if arg1 == '--registrador' or arg1 == '-r':
+		registrador.run()
+
+	if arg1 == '--verificador' or arg1 == '-v':
+		if len(sys.argv) > 3:
+			lim_max = int(sys.argv[2])
+			lim_med = int(sys.argv[3])
+			verificador.start(lim_max, lim_med)
+		else:
+			print 'Informe um limite máximo e um limite médio\nEx: ./ces -v 40 30'
+
+	if arg1 == '--instanciador' or arg1 == '-i' or arg1 == '-auto':
+		if len(sys.argv) > 3:
+			qt_instances = int(sys.argv[2])
+			instances.auto_on(qt_instances)
+		else:
+			print 'Informe uma quantidade de VMs a ser instanciadas em loop\nEx: ./ces -i 50'
+	
+	if arg1 == '--on' or arg1 == '-on':
+		if len(sys.argv) > 3:
+			qt_on = int(sys.argv[2])
+			instances.on(qt_on)
+		else:
+			print 'Informe uma quantidade de VMs para ligar\nEx: ./ces -on 5'
+
+	if arg1 == '--off' or arg1 == '-off':
+		if len(sys.argv) > 3:
+			qt_off = int(sys.argv[2])
+			instances._off(qt_off)
+		else:
+			print 'Informe uma quantidade de VMs desligar\nEx: ./ces -off 5'
+
+	if arg1 == '--status' or arg1 == '-s':
+		hosts = status.get()
+		print ''
+
+		for host in hosts:
+			print '%s [%s]' %(host['hostname'], host['state'])
+			print 'RAM: %s'%host['ram']
+			print 'VMs: %s\n' %host['vms']
+
+	if arg1 == '--help' or arg1 == '-h':
+		print '''
+####  Cloud Energy Saver (CES) ####
+
+Uso: ./ces [-opção] [PARAMS]
+
+  -h,   --help                        exibe esta ajuda
+  -r,   --registrador                 identifica e registra hosts
+  -v,   --verificador [MAX] [MED]     inicia a verificação de ociosidade e sobrecarga.
+                                      MAX e MED são os patamares limites (quanto maiores, mais economia e degrada o sistema)
+  -i,   --instanciador [QT]           inicia uma quantidade de instâncias em loop a cada 30 segundos
+  -on,  --ion [QT]                    liga uma quantidade de instâncias
+  -off, --off [QT]                    desliga uma quantidade de instâncias
+  -s,   --status                      exibe informações sobre os hosts
+
+		'''

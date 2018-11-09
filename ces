@@ -61,7 +61,7 @@ else:
 
 	if arg1 == '--help' or arg1 == '-h':
 		print '''
-####  Cloud Energy Saver (CES) ####
+#####  Cloud Energy Saver (CES) #####
 Gestão eficiente de energia para ambientes de Cloud Computing na plataforma Openstack
 
 Uso: ./ces [-opção] [PARAMS]

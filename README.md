@@ -6,26 +6,27 @@ Gestão eficiente de energia para ambientes de Cloud Computing na plataforma Ope
 
 
 ## Executar a aplicação
-'''sh
+
+```sh
 $ ./ces [-opções] [PARAMS]
 
-'''
+```
 
 ## Registrar os hosts
-'''sh
+```sh
 $ ./ces --registrador
 
-'''
+```
 
 ## Iniciar verificação
-'''sh
+```sh
 $ ./ces --verificador
 
-'''
+```
 
 ## Ajuda
-'''sh
+```sh
 $ ./ces --help
 
-'''
+```
 

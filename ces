@@ -1,6 +1,10 @@
 #!/usr/bin/python
 #coding: utf-8
 
+# Cloud Energy Saver
+# Gestão eficiente de energia para ambientes de Cloud Computing na plataforma Openstack
+
+
 import sys, registrador, verificador, status
 
 if len(sys.argv) <= 1:
@@ -58,6 +62,7 @@ else:
 	if arg1 == '--help' or arg1 == '-h':
 		print '''
 ####  Cloud Energy Saver (CES) ####
+Gestão eficiente de energia para ambientes de Cloud Computing na plataforma Openstack
 
 Uso: ./ces [-opção] [PARAMS]
 
@@ -65,9 +70,9 @@ Uso: ./ces [-opção] [PARAMS]
   -r,   --registrador                 identifica e registra hosts
   -v,   --verificador [MAX] [MED]     inicia a verificação de ociosidade e sobrecarga.
                                       MAX e MED são os patamares limites (quanto maiores, mais economia e degrada o sistema)
-  -i,   --instanciador [QT]           inicia uma quantidade de instâncias em loop a cada 30 segundos
-  -on,  --ion [QT]                    liga uma quantidade de instâncias
-  -off, --off [QT]                    desliga uma quantidade de instâncias
+  -i,   --instanciador [QT]           inicia uma quantidade[QT] de instâncias em loop a cada 30 segundos
+  -on,  --on [QT]                     liga uma quantidade[QT] de instâncias
+  -off, --off [QT]                    desliga uma quantidade[QT] de instâncias
   -s,   --status                      exibe informações sobre os hosts
 
 		'''

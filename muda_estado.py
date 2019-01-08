@@ -6,7 +6,6 @@ from subprocess import Popen, PIPE, STDOUT
 def wake(host):
 
 	mac_list = mac.get(host)
-	print 'Ligando %s'%host
 	mac_address = ''
 	for mac_address in mac_list:
 		command = "sudo etherwake -i eno1 %s" %mac_address

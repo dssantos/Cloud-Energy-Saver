@@ -8,18 +8,18 @@ Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do O
 
 ## Topologia
 ```mermaid
-graph LR
-A[Controller]
-X((Rede 10.0.0.0/24))
-B[Compute 1]
-C[Compute 2]
-D[Compute 3]
-E[Compute N]
-A  -- 10.0.0.11 --- X
-X  -- 10.0.0.31 --- B
-X  -- 10.0.0.32 --- C
-X  -- 10.0.0.33 --- D
-X  -- 10.0.0.34 --- E
+graph LR;
+A[Controller];
+X((Rede 10.0.0.0/24));
+B[Compute 1];
+C[Compute 2];
+D[Compute 3];
+E[Compute N];
+A  -- 10.0.0.11 --- X;
+X  -- 10.0.0.31 --- B;
+X  -- 10.0.0.32 --- C;
+X  -- 10.0.0.33 --- D;
+X  -- 10.0.0.34 --- E;
 ```
 
 

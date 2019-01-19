@@ -8,8 +8,9 @@ Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do O
 
 ## Topologia
 
-
 ![Topologia](topologia.png?raw=true)
+
+<!--
 
 ```mermaid
 graph TD;
@@ -29,7 +30,7 @@ X  -- 10.0.0.33 --- D;
 X  -- 10.0.0.34 --- E;
 end
 ```
-
+-->
 
 ## Requisitos
 Esta aplicação pode ser executada em qualquer máquina que esteja na mesma rede do Controller e dos Computes, desde que execute nesta máquina as atividades a seguir:

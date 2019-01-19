@@ -7,19 +7,27 @@ Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do O
 3. Utilizar a [máquina virtual para o Controller](https://mega.nz/fm/WCZTlaqC) e a [imagem do Compute](https://mega.nz/fm/WCZTlaqC) para clonar em pendrives e inicializar em PCs. Veja as instruções de clonagem no arquivo [LEIAME.txt](https://mega.nz/fm/WCZTlaqC).
 
 ## Topologia
+
+
+![Topologia](topologia.png?raw=true)
+
 ```mermaid
-graph LR;
+graph TD;
 A[Controller];
+Z(Computador com o CES);
 X((Rede 10.0.0.0/24));
 B[Compute 1];
 C[Compute 2];
 D[Compute 3];
 E[Compute N];
+Z  -. 10.0.0.100 .- X;
+subgraph Ambiente OpenStack
 A  -- 10.0.0.11 --- X;
 X  -- 10.0.0.31 --- B;
 X  -- 10.0.0.32 --- C;
 X  -- 10.0.0.33 --- D;
 X  -- 10.0.0.34 --- E;
+end
 ```
 
 

@@ -3,76 +3,92 @@
 
 # Cloud Energy Saver
 # Gerenciador de estado de hosts em ambientes de Cloud Computing na plataforma Openstack
+# https://github.com/dssantos/Cloud-Energy-Saver
 
+import sys
 
-import sys, registrador, verificador, status, instances
 
 if len(sys.argv) <= 1:
 
 	print 'Informe algum parâmetro!\nPara ajuda digite:\n./ces -h '
 
 else:
-
 	arg1 = sys.argv[1]
-	if len(sys.argv) > 2:
-		arg2 = int(sys.argv[2])
-
-
-	if arg1 == '--registrador' or arg1 == '-r':
-		registrador.run()
-
-	if arg1 == '--verificador' or arg1 == '-v':
-		if len(sys.argv) > 3:
-			lim_max = int(sys.argv[2])
-			lim_med = int(sys.argv[3])
-			verificador.start(lim_max, lim_med)
-		else:
-			print 'Informe um limite máximo e um limite médio\nEx: ./ces -v 40 30'
-
-	if arg1 == '--instanciador' or arg1 == '-i' or arg1 == '-auto':
-		if len(sys.argv) > 2:
-			qt_instances = int(sys.argv[2])
-			instances.auto_on(qt_instances)
-		else:
-			print 'Informe uma quantidade de VMs a ser instanciadas em loop\nEx: ./ces -i 50 auto'
-	
-	if arg1 == '--on' or arg1 == '-on':
-		if len(sys.argv) > 2:
-			qt_on = int(sys.argv[2])
-			instances.on(qt_on)
-		else:
-			print 'Informe uma quantidade de VMs para ligar\nEx: ./ces -on 5'
-
-	if arg1 == '--off' or arg1 == '-off':
-		if len(sys.argv) > 2:
-			qt_off = int(sys.argv[2])
-			instances.off(qt_off)
-		else:
-			print 'Informe uma quantidade de VMs para desligar\nEx: ./ces -off 5'
-
-	if arg1 == '--status' or arg1 == '-s':
-		hosts = status.get()
-		print ''
-
-		for host in hosts:
-			print '%s [%s]' %(host['hostname'], host['state'])
-			print 'RAM: %s'%host['ram']
-			print 'VMs: %s\n' %host['vms']
 
 	if arg1 == '--help' or arg1 == '-h':
 		print '''
 #####  Cloud Energy Saver (CES) #####
-Gestão eficiente de energia para ambientes de Cloud Computing na plataforma Openstack
+Gerenciador de estado de hosts em ambientes de Cloud Computing que utilizam a plataforma OpenStack
 
-Uso: ./ces [-opção] [PARAMS]
+Uso:
+	./ces [-opção] [PARAMS]
 
-  -h,   --help                        exibe esta ajuda
-  -r,   --registrador                 identifica e registra hosts
-  -v,   --verificador [MAX] [MED]     inicia a verificação de ociosidade e sobrecarga.
-                                      MAX e MED são os patamares limites (quanto maiores, mais economia e degrada o sistema)
-  -i,   --instanciador [QT]           inicia uma quantidade[QT] de instâncias em loop a cada 30 segundos
-  -on,  --on [QT]                     liga uma quantidade[QT] de instâncias
-  -off, --off [QT]                    desliga uma quantidade[QT] de instâncias
-  -s,   --status                      exibe informações sobre os hosts
+Opções e Parâmetros:
 
+	-h,   --help                        exibe esta ajuda
+	-r,   --registrador                 identifica e registra hosts
+	-v,   --verificador [MAX] [MED]     inicia a verificação de ociosidade e sobrecarga.
+	                                    MAX e MED são percentuais de memória RAM em uso nos hosts Compute e representam os limites que definem quando será preciso iniciar hosts (quando o ambiente está acima do MAX) ou desligar hosts (quando o ambiente está abaixo do MED)
+	-i,   --instanciador [QT]           inicia uma quantidade[QT] de instâncias uma a uma, a cada 30 segundos, e depois desligadas uma a uma, continuamente
+	-on,  --on [QT]                     liga uma quantidade[QT] de instâncias
+	-off, --off [QT]                    desliga uma quantidade[QT] de instâncias
+	-s,   --status                      exibe informações sobre os hosts Compute
 		'''
+
+	else:
+		try:
+
+			import registrador, verificador, status, instances
+
+			
+			if len(sys.argv) > 2:
+				arg2 = int(sys.argv[2])
+
+
+			if arg1 == '--registrador' or arg1 == '-r':
+				registrador.run()
+
+			if arg1 == '--verificador' or arg1 == '-v':
+				if len(sys.argv) > 3:
+					lim_max = int(sys.argv[2])
+					lim_med = int(sys.argv[3])
+					verificador.start(lim_max, lim_med)
+				else:
+					print 'Informe um limite máximo e um limite médio\nEx: ./ces -v 40 30'
+
+			if arg1 == '--instanciador' or arg1 == '-i' or arg1 == '-auto':
+				if len(sys.argv) > 2:
+					qt_instances = int(sys.argv[2])
+					instances.auto_on(qt_instances)
+				else:
+					print 'Informe uma quantidade de VMs a ser instanciadas\nEx: ./ces -i 50'
+			
+			if arg1 == '--on' or arg1 == '-on':
+				if len(sys.argv) > 2:
+					qt_on = int(sys.argv[2])
+					instances.on(qt_on)
+				else:
+					print 'Informe uma quantidade de VMs para ligar\nEx: ./ces -on 5'
+
+			if arg1 == '--off' or arg1 == '-off':
+				if len(sys.argv) > 2:
+					qt_off = int(sys.argv[2])
+					instances.off(qt_off)
+				else:
+					print 'Informe uma quantidade de VMs para desligar\nEx: ./ces -off 5'
+
+			if arg1 == '--status' or arg1 == '-s':
+				hosts = status.get()
+
+				if len(hosts) < 1:
+
+					print "Não exitem hosts Compute registrados!\nExecute './ces -r' para registrálos"
+
+				else:
+					print "[Status dos Hosts Compute]\n"
+					for host in hosts:
+						print '%s [%s]' %(host['hostname'], host['state'])
+						print 'RAM: %s %'%host['ram']
+						print 'VMs: %s\n' %host['vms']
+		except:
+			print "Há algo errado com o ambiente do OpenStack ou este computador não possui comunicação com o Controller.\nVerifique os requisitos em https://github.com/dssantos/Cloud-Energy-Saver"

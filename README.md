@@ -2,7 +2,7 @@
 O Cloud Energy Saver (CES) é um gerenciador de estado de hosts em ambientes de Cloud Computing que utilizam a plataforma OpenStack.
 
 Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do OpenStack. Para utilizar esta aplicação é preciso ter um ambiente devidamente configurado com o OpenStack. Portanto, é possível obter tal ambiente através de uma das opções a seguir:
-1. Instalar o OpenStack Pike (apenas os serviços Keystone, Glance, Nova e Horizon), no Ubuntu 16.04, seguindo a [documentação oficial do OpenStack](https://docs.openstack.org/pike/install/), utilizado sempre as credenciais *user* e *123456* em todos os serviços;
+1. Instalar o OpenStack Pike (apenas os serviços Keystone, Glance, Nova e Horizon), no Ubuntu 16.04, seguindo a [documentação oficial do OpenStack](https://docs.openstack.org/pike/install/), utilizado sempre a senha *123456* em todos os serviços (esta senha pode ser editada no arquivo *header.py* desta aplicação);
 2. Seguir o passo-a-passo para a [Instalação do Openstack no Ubuntu 16.04](http://danilosantos.info/instalacao-do-openstack-pike-no-ubuntu-16-04/), ou;
 3. Utilizar [imagens prontas](https://mega.nz/fm/WCZTlaqC) do Controller e do Compute. O Controller.vdi é um arquivo de máquina virtual para VirtualBox e o ComputePen.raw é uma imagem que pode ser clonada para pendrives, possibilitando iniciar o sistema operacional via USB. Veja as instruções de clonagem no arquivo [LEIAME.txt](https://mega.nz/fm/WCZTlaqC).
 
@@ -36,8 +36,22 @@ end
 Esta aplicação pode ser executada em qualquer máquina com sistema Linux (utilizei o Ubuntu 16.04) que esteja na mesma rede do Controller e dos Computes.
 Com o ambiente do OpenStack funcionando, execute as atividades a seguir:
 
-### 1. Adicione os hosts no arquivo /etc/hosts (utilize um editor para inserir as linhas a seguir)
+### 1. Configure a máquina para se comunicar com o ambiente do OpenStack e reinicie o serviço
 ```sh
+$ sudo ifconfig [INTERFACE] 10.0.0.100/24 up
+```
+> Substitua [INTERFACE] pelo nome da sua placa de rede que está conectada ao ambiente do OpenStack.
+
+
+### 2. Reinicie o serviço de rede
+```sh
+$ sudo service networking restart
+```
+
+### 3. Adicione os hosts no arquivo /etc/hosts (utilize um editor para inserir as linhas a seguir)
+```sh
+# Arquivo /etc/hosts
+
 10.0.0.11	controller
 10.0.0.31	compute1
 10.0.0.32	compute2
@@ -45,7 +59,7 @@ Com o ambiente do OpenStack funcionando, execute as atividades a seguir:
 10.0.0.34	compute4
 ```
 
-### 2. Verifique a conectividade com os hosts
+### 4. Verifique a conectividade com os hosts
 ```sh
 $ ping -4 controller
 $ ping -4 compute1
@@ -54,12 +68,12 @@ $ ping -4 compute3
 $ ping -4 compute4
 ```
 
-### 3. Gere uma chave RSA (deixe a senha em branco)
+### 5. Gere uma chave RSA (deixe a senha em branco)
 ```sh
 $ ssh-keygen -t rsa
 ```
 
-### 4. Copie a chave RSA para cada Compute
+### 6. Copie a chave RSA para cada Compute
 ```sh
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute1
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute2
@@ -67,16 +81,19 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute3
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute4
 ```
 
-### 5. Instale o etherwake
+### 7. Instale o etherwake
 ```sh
 $ sudo apt-get install etherwake
 ```
-### 6. Edite o arquivo *muda_estado.py* desta aplicação e substitua [INTERFACE] pelo nome da placa de rede deste computador que se comunica com o Controller e os Compute
+
+### 8. Edite a placa de rede no arquivo *muda_estado.py* desta aplicação (utilize um editor para alterar a linha a seguir)
 ```sh
-$ vim muda_estado.py
+# Arquivo /ces/muda_estado.py
+
+command = "sudo etherwake -i [INTERFACE] %s" %mac_address
+
 ```
-> Edite [INTERFACE] nesta linha:
-> command = "sudo etherwake -i [INTERFACE] %s" %mac_address
+> Substitua [INTERFACE] pelo nome da sua placa de rede
 
 ## Comandos básicos
 
@@ -84,7 +101,7 @@ $ vim muda_estado.py
 ```sh
 $ ./ces -r
 ```
-> Lista todos os computes e seus respectivos endereços MAC, registrando-os em um arquivo local.
+> Este comando deve ser executado antes de iniciar a verificação e todos os hosts Compute precisam estar ligados. O comando identifica os Computes e seus respectivos endereços MAC, registrando-os em um arquivo local.
 
 ### Iniciar a verificação
 ```sh

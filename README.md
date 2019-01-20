@@ -2,7 +2,7 @@
 O Cloud Energy Saver (CES) é um gerenciador de estado de hosts em ambientes de Cloud Computing que utilizam a plataforma OpenStack.
 
 Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do OpenStack. Para utilizar esta aplicação é preciso ter um ambiente devidamente configurado com o OpenStack. Portanto, é possível obter tal ambiente através de uma das opções a seguir:
-1. Instalar o OpenStack Pike (apenas os serviços Keystone, Glance, Nova e Horizon), no Ubuntu 16.04, seguindo a [documentação oficial do OpenStack](https://docs.openstack.org/pike/install/), utilizado sempre a senha *123456* em todos os serviços (esta senha pode ser editada no arquivo *header.py* desta aplicação);
+1. Instalar o OpenStack Pike (apenas os serviços Keystone, Glance, Nova e Horizon), no Ubuntu 16.04, seguindo a [documentação oficial do OpenStack](https://docs.openstack.org/pike/install/), utilizado sempre a senha *123456* em todos os serviços (esta senha pode ser editada no arquivo [header.py](header.py) desta aplicação);
 2. Seguir o passo-a-passo para a [Instalação do Openstack no Ubuntu 16.04](http://danilosantos.info/instalacao-do-openstack-pike-no-ubuntu-16-04/), ou;
 3. Utilizar [imagens prontas](https://mega.nz/fm/WCZTlaqC) do Controller e do Compute. O Controller.vdi é um arquivo de máquina virtual para VirtualBox e o ComputePen.raw é uma imagem que pode ser clonada para pendrives, possibilitando iniciar o sistema operacional via USB. Veja as instruções de clonagem no arquivo [LEIAME.txt](https://mega.nz/fm/WCZTlaqC).
 
@@ -36,7 +36,7 @@ end
 Esta aplicação pode ser executada em qualquer máquina com sistema Linux (utilizei o Ubuntu 16.04) que esteja na mesma rede do Controller e dos Computes.
 Com o ambiente do OpenStack funcionando, execute as atividades a seguir:
 
-### 1. Configure a máquina para se comunicar com o ambiente do OpenStack e reinicie o serviço
+### 1. Configure a máquina para se comunicar com o ambiente do OpenStack
 ```sh
 $ sudo ifconfig [INTERFACE] 10.0.0.100/24 up
 ```
@@ -86,7 +86,7 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute4
 $ sudo apt-get install etherwake
 ```
 
-### 8. Edite a placa de rede no arquivo *muda_estado.py* desta aplicação (utilize um editor para alterar a linha a seguir)
+### 8. Edite a placa de rede no arquivo [muda_estado.py](muda_estado.py) desta aplicação (utilize um editor para alterar a linha a seguir)
 ```sh
 # Arquivo /ces/muda_estado.py
 

@@ -82,13 +82,16 @@ Opções e Parâmetros:
 
 				if len(hosts) < 1:
 
-					print "Não exitem hosts Compute registrados!\nExecute './ces -r' para registrálos"
+					print "Não exitem hosts Compute registrados!\nExecute './ces -r' para registrá-los"
 
 				else:
 					print "[Status dos Hosts Compute]\n"
 					for host in hosts:
 						print '%s [%s]' %(host['hostname'], host['state'])
-						print 'RAM: %s %'%host['ram']
-						print 'VMs: %s\n' %host['vms']
+						print('RAM: {} %'.format(host['ram']))
+						try:
+							print 'VMs: %s\n' %host['vms']
+						except:
+							pass
 		except:
 			print "Há algo errado com o ambiente do OpenStack ou este computador não possui comunicação com o Controller.\nVerifique os requisitos em https://github.com/dssantos/Cloud-Energy-Saver"

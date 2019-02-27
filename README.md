@@ -86,14 +86,45 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute4
 $ sudo apt-get install etherwake
 ```
 
-### 8. Edite a placa de rede no arquivo [muda_estado.py](muda_estado.py) desta aplicação (utilize um editor para alterar a linha a seguir)
+### 8. Clone o repositório do Cloud-Energy-Saver
 ```sh
-# Arquivo /ces/muda_estado.py
+$ git clone https://github.com/dssantos/Cloud-Energy-Saver.git
+```
+
+### 9. Acesse a pasta
+```sh
+$ cd Cloud-Energy-Saver
+```
+
+### 10. Edite a placa de rede no arquivo [muda_estado.py](muda_estado.py) desta aplicação (utilize um editor para alterar a linha a seguir)
+```sh
+# Arquivo muda_estado.py
 
 command = "sudo etherwake -i [INTERFACE] %s" %mac_address
 
 ```
 > Substitua [INTERFACE] pelo nome da sua placa de rede
+
+### 11. Acesse o Controller e verifique o funcionamento do ambiente do OpenStack
+```sh
+$ ssh user@controller '. admin-openrc && openstack compute service list'
+```
+> Deverá retornar algo similar a isto:
+```sh
++----+------------------+------------+----------+---------+-------+----------------------------+
+| ID | Binary           | Host       | Zone     | Status  | State | Updated At                 |
++----+------------------+------------+----------+---------+-------+----------------------------+
+|  1 | nova-scheduler   | controller | internal | enabled | up    | 2019-02-27T01:02:53.000000 |
+|  2 | nova-consoleauth | controller | internal | enabled | up    | 2019-02-27T01:02:53.000000 |
+|  3 | nova-conductor   | controller | internal | enabled | up    | 2019-02-27T01:02:48.000000 |
+|  6 | nova-compute     | compute1   | nova     | enabled | up    | 2019-02-27T01:02:50.000000 |
+|  7 | nova-compute     | compute2   | nova     | enabled | up    | 2019-02-20T23:57:36.000000 |
+|  8 | nova-compute     | compute3   | nova     | enabled | up    | 2019-02-20T23:52:52.000000 |
+|  9 | nova-compute     | compute4   | nova     | enabled | up    | 2019-02-20T23:46:50.000000 |
++----+------------------+------------+----------+---------+-------+----------------------------+
+```
+
+
 
 ## Comandos básicos
 

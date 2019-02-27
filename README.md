@@ -4,7 +4,7 @@ O Cloud Energy Saver (CES) é um gerenciador de estado de hosts em ambientes de 
 Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do OpenStack. Para utilizar esta aplicação é preciso ter um ambiente devidamente configurado com o OpenStack. Portanto, é possível obter tal ambiente através de uma das opções a seguir:
 1. Instalar o OpenStack Pike (apenas os serviços Keystone, Glance, Nova e Horizon), no Ubuntu 16.04, seguindo a [documentação oficial do OpenStack](https://docs.openstack.org/pike/install/), utilizado sempre a senha *123456* em todos os serviços (esta senha pode ser editada no arquivo [header.py](header.py) desta aplicação);
 2. Seguir o passo-a-passo para a [Instalação do Openstack no Ubuntu 16.04](http://danilosantos.info/instalacao-do-openstack-pike-no-ubuntu-16-04/), ou;
-3. Utilizar [imagens prontas](https://mega.nz/fm/WCZTlaqC) do Controller e do Compute. O Controller.vdi é um arquivo de máquina virtual para VirtualBox e o ComputePen.raw é uma imagem que pode ser clonada para pendrives, possibilitando iniciar o sistema operacional via USB. Veja as instruções de clonagem no arquivo [LEIAME.txt](https://mega.nz/fm/WCZTlaqC).
+3. Utilizar [imagens prontas](https://mega.nz/#F!TbBmSA4b!YHuaruKoxMUFtyM6OXNsWQ) do Controller e do Compute. O Controller.vdi é um arquivo de máquina virtual para VirtualBox e o ComputePen.raw é uma imagem que pode ser clonada para pendrives, possibilitando iniciar o sistema operacional via USB. Veja as instruções de clonagem no arquivo [LEIAME.txt](https://mega.nz/#F!TbBmSA4b!YHuaruKoxMUFtyM6OXNsWQ).
 
 ## Topologia
 

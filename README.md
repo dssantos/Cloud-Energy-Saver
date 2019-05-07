@@ -157,3 +157,13 @@ $ ./ces -s
 $ ./ces -h
 ```
 > Exibe a ajuda do aplicativo descrevendo a sintaxe e os parâmetros
+
+
+## SBRC 2019
+
+O Cloud Energy Saver foi apresentado no Salão de Ferramentas do XXXVII Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos (SBRC), realizado em Gramado/RS de 06 a 10 de maio de 2019. O trabalho teve como título: "Um Protótipo para Experimentos de Eficiência Energética em Nuvem Openstack".
+
+
+## Vídeo
+
+[Cloud Energy Saver - Configuração dos requisitos e demonstração](https://www.youtube.com/watch?v=JgP-1g3kOWI)

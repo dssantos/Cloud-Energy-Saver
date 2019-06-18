@@ -1,12 +1,11 @@
 # Cloud Energy Saver - CES
-O Cloud Energy Saver (CES) é um gerenciador de estado de hosts em ambientes de Cloud Computing que utilizam a plataforma OpenStack.
+O Cloud Energy Saver (CES) is a host state manager for OpenStack Cloud Computing environments that allows for power management experiments.
 
-Esta aplicação é capaz de ligar e desligar hosts Computes de um ambiente do OpenStack. Para utilizar esta aplicação é preciso ter um ambiente devidamente configurado com o OpenStack. Portanto, é possível obter tal ambiente através de uma das opções a seguir:
-1. Instalar o OpenStack Pike (apenas os serviços Keystone, Glance, Nova e Horizon), no Ubuntu 16.04, seguindo a [documentação oficial do OpenStack](https://docs.openstack.org/pike/install/), utilizado sempre a senha *123456* em todos os serviços (esta senha pode ser editada no arquivo [header.py](header.py) desta aplicação);
-2. Seguir o passo-a-passo para a [Instalação do Openstack no Ubuntu 16.04](http://danilosantos.info/instalacao-do-openstack-pike-no-ubuntu-16-04/), ou;
-3. Utilizar [imagens prontas](https://mega.nz/#F!TbBmSA4b!YHuaruKoxMUFtyM6OXNsWQ) do Controller e do Compute. O Controller.vdi é um arquivo de máquina virtual para VirtualBox e o ComputePen.raw é uma imagem que pode ser clonada para pendrives, possibilitando iniciar o sistema operacional via USB. Veja as instruções de clonagem no arquivo [LEIAME.txt](https://mega.nz/#F!TbBmSA4b!YHuaruKoxMUFtyM6OXNsWQ).
+This application is able to connect and disconnect Compute hosts Compute on an OpenStack environment. To use this application you must have an environment properly configured with OpenStack. Therefore, it is possible to obtain such an environment through one of the following options:
+1. Install OpenStack Pike (only Keystone, Glance, Nova and Horizon services), in Ubuntu 16.04, using [official docs](https://docs.openstack.org/pike/install/), keeping password *123456* for all services (this password may be edited on file [header.py](header.py));
+2. Use [ready images](https://mega.nz/#F!TbBmSA4b!YHuaruKoxMUFtyM6OXNsWQ) for Controller and Compute. Controller.vdi is a virtual machine file for VirtualBox and ComputePen.raw is a pendrive image that allows to initialize a full configured Compute node from a USB booting procedure.
 
-## Topologia
+## Topology
 
 ![Topologia](topologia.png?raw=true)
 
@@ -32,25 +31,24 @@ end
 ```
 -->
 
-## Requisitos
-Esta aplicação pode ser executada em qualquer máquina com sistema Linux (utilizei o Ubuntu 16.04) que esteja na mesma rede do Controller e dos Computes.
-Com o ambiente do OpenStack funcionando, execute as atividades a seguir:
+## Requisites
+This application can be run on any Linux machine (I used Ubuntu 16.04) that is on the same network as the Controller and the Compute nodes. With the OpenStack environment running, perform the following activities:
 
-### 1. Configure a máquina para se comunicar com o ambiente do OpenStack
+### 1. Configure the machine to connect with OpenStack environment
 ```sh
 $ sudo ifconfig [INTERFACE] 10.0.0.100/24 up
 ```
-> Substitua [INTERFACE] pelo nome da sua placa de rede que está conectada ao ambiente do OpenStack.
+> Replace [INTERFACE] by your network interface name attached to OpenStack environment.
 
 
-### 2. Reinicie o serviço de rede
+### 2. Restart network service
 ```sh
 $ sudo service networking restart
 ```
 
-### 3. Adicione os hosts no arquivo /etc/hosts (utilize um editor para inserir as linhas a seguir)
+### 3. Add hosts on file /etc/hosts
 ```sh
-# Arquivo /etc/hosts
+# File /etc/hosts
 
 10.0.0.11	controller
 10.0.0.31	compute1
@@ -59,7 +57,7 @@ $ sudo service networking restart
 10.0.0.34	compute4
 ```
 
-### 4. Verifique a conectividade com os hosts
+### 4. Check host connectivity
 ```sh
 $ ping -4 controller
 $ ping -4 compute1
@@ -68,12 +66,12 @@ $ ping -4 compute3
 $ ping -4 compute4
 ```
 
-### 5. Gere uma chave RSA (deixe a senha em branco)
+### 5. Generate a RSA key (allowing a blank password)
 ```sh
 $ ssh-keygen -t rsa
 ```
 
-### 6. Copie a chave RSA para cada Compute
+### 6. Copy the RSA key to each Compute node
 ```sh
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute1
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute2
@@ -81,35 +79,35 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute3
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@compute4
 ```
 
-### 7. Instale o etherwake
+### 7. Install the etherwake
 ```sh
 $ sudo apt-get install etherwake
 ```
 
-### 8. Clone o repositório do Cloud-Energy-Saver
+### 8. Clone Cloud-Energy-Saver repository
 ```sh
 $ git clone https://github.com/dssantos/Cloud-Energy-Saver.git
 ```
 
-### 9. Acesse a pasta
+### 9. Access Cloud-Energy-Saver local directoru
 ```sh
 $ cd Cloud-Energy-Saver
 ```
 
-### 10. Edite a placa de rede no arquivo [muda_estado.py](muda_estado.py) desta aplicação (utilize um editor para alterar a linha a seguir)
+### 10. Edit interface name on file [muda_estado.py](muda_estado.py)
 ```sh
-# Arquivo muda_estado.py
+# File muda_estado.py
 
 command = "sudo etherwake -i [INTERFACE] %s" %mac_address
 
 ```
-> Substitua [INTERFACE] pelo nome da sua placa de rede
+> Replace [INTERFACE] by your network interface name attached to OpenStack environment.
 
-### 11. Acesse o Controller e verifique o funcionamento do ambiente do OpenStack
+### 11. Access the Controller and check if OpenStack environment is running
 ```sh
 $ ssh user@controller '. admin-openrc && openstack compute service list'
 ```
-> Deverá retornar algo similar a isto:
+> You should see something like that:
 ```sh
 +----+------------------+------------+----------+---------+-------+----------------------------+
 | ID | Binary           | Host       | Zone     | Status  | State | Updated At                 |
@@ -124,46 +122,34 @@ $ ssh user@controller '. admin-openrc && openstack compute service list'
 +----+------------------+------------+----------+---------+-------+----------------------------+
 ```
 
+## Basic commands
 
-
-## Comandos básicos
-
-### Registrar os hosts
+### Register hosts
 ```sh
 $ ./ces -r
 ```
-> Este comando deve ser executado antes de iniciar a verificação e todos os hosts Compute precisam estar ligados. O comando identifica os Computes e seus respectivos endereços MAC, registrando-os em um arquivo local.
+> This command must be run before starting the checking and all Compute hosts must be connected. The command identifies the Compute nodes and their respective MAC addresses by registering them in a local file.
 
-### Iniciar a verificação
+### Start checking
 ```sh
 $ ./ces -v 70 30
 ```
-> Neste exemplo, a aplicação inicia a verificação de sobrecarga ou ociosidade, considerando 70 como o limite máximo e 30 como o limite médio.
-> MAX e MED são os percentuais de memória RAM em uso nos hosts Compute e representam os limites que definem quando será preciso iniciar hosts (quando o ambiente está acima do MAX) ou desligar hosts (quando o ambiente está abaixo do MED).
+> In this example, application starts load checking, using 70 as maximum level and 30 as average level.
+> MAX e MED are are the percentages of RAM in use on Compute hosts and represent the limits that define when to start hosts (when the environment is above MAX) or to turn off hosts (when the environment is below the MED).
 
-### Inicializar VMs para gerar carga no ambiente
+### Initialize VMs to create load on cloud environment
 ```sh
 $ ./ces -i 50
 ```
-> Neste exemplo, 50 VMs são inicializadas uma a uma e depois desligadas uma a uma, continuamente.
+> In this example, 50 VMs are initialized one by one and then shut down one by one, continuously.
 
-### Exibir o status atual dos hosts Compute
+### Show current status of Compute nodes
 ```sh
 $ ./ces -s
 ```
 
-### Exibir a ajuda
+### Show help
 ```sh
 $ ./ces -h
 ```
-> Exibe a ajuda do aplicativo descrevendo a sintaxe e os parâmetros
-
-
-## SBRC 2019
-
-O Cloud Energy Saver foi apresentado no Salão de Ferramentas do XXXVII Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos (SBRC), realizado em Gramado/RS de 06 a 10 de maio de 2019. O trabalho teve como título: "Um Protótipo para Experimentos de Eficiência Energética em Nuvem Openstack".
-
-
-## Vídeo
-
-[Cloud Energy Saver - Configuração dos requisitos e demonstração](https://www.youtube.com/watch?v=JgP-1g3kOWI)
+> It shows application help, describing sintax and related parameters.

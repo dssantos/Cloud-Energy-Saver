@@ -39,24 +39,24 @@ def get():
 	}
 	"""
 
-	now = time.time() # timestamp atual
+	now = time.time() # current timestamp
 	try:
-		modified = os.path.getmtime('token.txt') # última modificação do arquivo
+		modified = os.path.getmtime('token.txt') # Last file modification
 	except:
-		modified = 0 # caso o arquivo não exista, modified será zero, assim entrará no else para gerar o token
+		modified = 0 # if the file does not exist, modified will be zero, so it will enter the else to generate the token
 	
-	if now - modified < 3600:
+	if now - modified < 3600: # check if modified is less than 1 hour (OpenStack Keystone token expires in 1 hour)
 		file = open("token.txt", "r+")
 		header = file.read()
 
-	else:
+	else: # generate new token 
 		r = requests.post('http://controller:5000/v3/auth/tokens', data=body, headers=headers)
 		token = r.headers['X-Subject-Token']
-		header = "{'X-Auth-Token':'"+token+"'}"  # Dicionário com o Token que será utilizado no cabeçalho das consultas via API
+		header = "{'X-Auth-Token':'"+token+"'}"  # Token string
 		file = open("token.txt", "w+")
 		file.write(header)
 		file.close()
 		
-	header = ast.literal_eval(header)  # Dicionário com o Token que será utilizado no cabeçalho das consultas via API
+	header = ast.literal_eval(header)  # Dictionary with Token to be used in the query header via API
 
 	return header

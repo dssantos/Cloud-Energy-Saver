@@ -2,16 +2,16 @@
 
 import subprocess, string, ast
 
-def get(host): # O método deve receber um host
+def get(host): # The method must receive a host
 
-		command = "ssh user@" + host + " 'free -m | grep Mem'" # Comando para obter informações de RAM do host remoto
+		command = "ssh user@" + host + " 'free -m | grep Mem'" # Command for obtaining remote host RAM information
 		
 		try:
-			output = subprocess.check_output(command, shell=True)  # Recebe a saída do comando acima
-			mem_info = string.split(output) # Transforma strings de valores separados por espaços em uma lista
-			ram_usage = float(mem_info[2])/float(mem_info[1])*100 # Calcula o percentual de uso da RAM
+			output = subprocess.check_output(command, shell=True)  # Receives the output of the above command
+			mem_info = string.split(output) # Transforms strings of values separated by spaces in a list
+			ram_usage = float(mem_info[2])/float(mem_info[1])*100 # Calculates the percentage of RAM usage
 
 		except subprocess.CalledProcessError:
-			ram_usage = 0.0  # Caso o host não seja alcançado, o comando resultará erro, então o uso da RAM será zero
+			ram_usage = 0.0  # If the host is not reached, the command will result in an error, so the RAM usage will be zero
 
 		return ram_usage

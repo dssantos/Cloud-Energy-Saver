@@ -18,24 +18,24 @@ def run(lim_max, lim_med):
 		print 'É preciso registrar os hosts do ambiente'
 		registered = []
 
-	for host in hosts:	# Insere os hosts que estão ligados (e possuem VMs) em uma lista de ativos 
+	for host in hosts:	# Inserts the hosts that are connected (and have VMs) in an list of actives
 		if host['state'] == 'up':
 			if host['vms'] > 0:
 				running.append(host['hostname'])
-				ram.append(host['ram']) # Captura os consumos de memória e insere em uma lista
+				ram.append(host['ram']) # Captures memory consumption and inserts into a list
 
-	for host in hosts: # Insere os hosts que estão ligados, mas não possuem VMs, em uma lista de ociosos
+	for host in hosts: # Inserts hosts that are running (and do not have VMs) in a list of idlers
 		if host['state'] == 'up':
 			if host['vms'] == 0:
 				idle.append(host['hostname'])
 
-	for host in hosts: # Insere os hosts que estão desligados (e estão registrados) em uma lista de offline
+	for host in hosts: # Inserts hosts that are shut down (and registered) in an list of offline 
 		if host['state'] == 'down':
 			if host['hostname'] in registered:
 				offline.append(host['hostname'])
 
 	try:
-		ram_avg = sum(ram) / len(ram) # Calcula a média de memória em uso dos hosts ativos
+		ram_avg = sum(ram) / len(ram) # Calculates an average of memory in use by active hosts
 	except:
 		ram_avg = 0
 	
@@ -44,33 +44,33 @@ def run(lim_max, lim_med):
 	print 'offline: ' + str(offline)
 	print 'média de ram: %s' %ram_avg
 
-## Lógica do gerenciamento dos hosts a serem ligados e desligados
+## Logic of the management of the hosts to be turned on and off
 	
-	if ram_avg > lim_max:						## Se RAM estiver acima do limite máximo
+	if ram_avg > lim_max:						## If RAM is above the maximum limit
 		if len(idle) > 0:
-			if len(idle) > 1:					## Mantêm 1 ocioso ligado, mas desliga os demais
-				for i in range(len(idle)-1):	# Desliga todos menos 1
+			if len(idle) > 1:					## They keep 1 idle on and shut off others
+				for i in range(len(idle)-1):	# Turn off all except 1
 					print 'desligando %s' %idle[i+1]
 					muda_estado.shutdown(idle[i+1])
 		else:
-			if len(offline) > 0:				# Se existir hosts offline ...
+			if len(offline) > 0:				# If there are offline hosts ...
 				print 'ligando %s' %offline[0]
-				muda_estado.wake(offline[0]) 			# Acorda o primeiro host offline da lista
+				muda_estado.wake(offline[0]) 			# Wake up the first offline host from the list
 			else:
 				print 'Não há mais hosts offline para ligar.\nO sistema está no limite!!!'
 	else:
 		if len(idle) > 0:
-			if ram_avg >= lim_med:				## Se RAM estiver entre os limites médio e máximo
-				for i in range(len(idle)-1):	# Desliga todos menos 1
+			if ram_avg >= lim_med:				## If RAM is between the medium and maximum limits
+				for i in range(len(idle)-1):	# Turn off all except 1
 					print 'desligando %s' %idle[i+1]
 					muda_estado.shutdown(idle[i+1])
 			else:
-				if len(running) >= 1:		## Se houver pelo menos 1 host ativo
+				if len(running) >= 1:		## If there is at least 1 active host
 					for host in idle:				
 						print 'desligando %s' %host
-						muda_estado.shutdown(host)		# Desliga todos os hosts ociosos
-				else:								# Senão...
-					for i in range(len(idle)-1):	# Desliga todos menos 1
+						muda_estado.shutdown(host)		# shut down all idle hosts
+				else:								# Else...
+					for i in range(len(idle)-1):	# Turn off all except 1
 						print 'desligando %s' %idle[i+1]
 						muda_estado.shutdown(idle[i+1])
 

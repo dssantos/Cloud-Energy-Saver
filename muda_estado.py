@@ -15,6 +15,6 @@ def shutdown(host):
 
 	command = "ssh user@%s 'sudo shutdown now'" %host
 
-	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True) # Executa o comando e armazena o STDOUT
+	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True) # Runs command and store STDOUT
 	output = p.stdout.read()
 	print output

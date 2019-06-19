@@ -5,7 +5,7 @@ import requests, header, ast, mac
 def run():
 
 	r = requests.get('http://controller:8774/v2.1/os-hypervisors', headers=header.get())
-	hosts = ast.literal_eval(r.content) # Retorna o conteúdo da URL consultada
+	hosts = ast.literal_eval(r.content) # Returns the content of the queried URL
 	hosts = hosts['hypervisors']
 
 	discovered = []
@@ -19,7 +19,7 @@ def run():
 			mac.set(hostname)
 
 	file = open("registered.txt", "w+")
-	file.write(str(discovered))
+	file.write(str(discovered)) # the discovered hosts are written to a file
 	file.close()
 
 	if len(discovered)>0:

@@ -20,8 +20,8 @@ def set(host):
 
 		for interface in list_intefaces:
 
-			command = "ssh user@%s 'cat /sys/class/net/%s/address'" %(host, interface) # Comando para obter mac address
-			mac = subprocess.check_output(command, shell=True)  # Recebe a saída do comando acima
+			command = "ssh user@%s 'cat /sys/class/net/%s/address'" %(host, interface) # command to return mac address
+			mac = subprocess.check_output(command, shell=True)  # Receives the output of the above command
 			macs.append(mac.rstrip())     
 
 	except subprocess.CalledProcessError:

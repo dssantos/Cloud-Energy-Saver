@@ -5,9 +5,9 @@ import requests, header, ast, vms, ram_usage
 def get():
 
 	r = requests.get('http://controller:8774/v2.1/os-hypervisors', headers=header.get())
-	hosts = ast.literal_eval(r.content) # Retorna o conteúdo da URL consultada
+	hosts = ast.literal_eval(r.content) # Returns the content of the queried URL
 	hosts = hosts['hypervisors']
-	## Testes
+	## Tests
 	# hosts = [{'status': 'enabled', 'state': 'down', 'id': 1, 'hypervisor_hostname': 'compute1'},{'status': 'enabled', 'state': 'down', 'id': 1, 'hypervisor_hostname': 'compute2'},{'status': 'enabled', 'state': 'down', 'id': 1, 'hypervisor_hostname': 'compute3'},{'status': 'enabled', 'state': 'up', 'id': 1, 'hypervisor_hostname': 'compute6'},{'status': 'enabled', 'state': 'up', 'id': 1, 'hypervisor_hostname': 'compute5'}]
 
 	status = []
@@ -21,7 +21,7 @@ def get():
 		registered = []
 
 	for host in hosts:
-		if host['hypervisor_hostname'] in registered:  # Verifica apenas os hosts registrados no arquivo registered.txt
+		if host['hypervisor_hostname'] in registered:  # Check only the hosts registered in the registered.txt file
 			state = host['state']
 			host_id = host['id']
 			hostname = host['hypervisor_hostname']
@@ -33,6 +33,6 @@ def get():
 			host_status = "{'id': " + str(host_id) + ", 'hostname': '" + hostname + "', 'state': '" + state + "', 'vms': " + str(vms_runnig) + ", 'ram': " + str(ram) + "}"
 			host_status = ast.literal_eval(host_status)
 
-			status.append(host_status)  ## Adiciona as as informações de cada host ativo em uma lista
+			status.append(host_status)  ## Adds information from each active host to a list...
 
 	return status

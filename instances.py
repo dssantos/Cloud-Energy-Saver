@@ -3,7 +3,7 @@
 import requests, ast, header, subprocess, time, sys
 
 r = requests.get('http://controller:8774/v2.1/servers', headers=header.get())
-vm_list = ast.literal_eval(r.content) # Retorna o conteúdo da URL consultada
+vm_list = ast.literal_eval(r.content) # Returns the content of the queried URL
 vm_list = vm_list['servers']
 length = len(vm_list)
 
@@ -27,7 +27,7 @@ def on(qt_on):
 		vm = 'vm-%s' %pos
 		print 'ligando %s' %vm
 		command = "ssh user@controller '. admin-openrc && openstack server create --image cirros --flavor=1CPU_128RAM %s'" %vm
-		run = subprocess.check_output(command, shell=True)  # Recebe a saída do comando acima
+		run = subprocess.check_output(command, shell=True)  # Receives the output of the above command
 		qt_on -= 1
 		pos += 1
 
@@ -40,8 +40,8 @@ def off(qt_off):
 		while pos > length-qt_off:
 			vm = vms[pos-1]
 			print 'desligando %s' %vm
-			command = "ssh user@controller '. admin-openrc && openstack server delete %s'" %vm # Comando para 
-			run = subprocess.check_output(command, shell=True)  # Recebe a saída do comando acima
+			command = "ssh user@controller '. admin-openrc && openstack server delete %s'" %vm
+			run = subprocess.check_output(command, shell=True)  # Receives the output of the above command
 			pos -= 1
 
 
@@ -55,7 +55,7 @@ def auto_on(limit):
 		pos = len(get()) + 1
 		vms = []
 		for x in range(limit):
-			for i in xrange(25,-1,-1):
+			for i in xrange(60,-1,-1):
 				print "Liga em: %3d\r"%i,
 				time.sleep(1)
 				sys.stdout.flush()
@@ -63,15 +63,15 @@ def auto_on(limit):
 			pos += 1
 			print 'ligando %s' %vm
 			command = "ssh user@controller '. admin-openrc && openstack server create --image cirros --flavor=1CPU_128RAM %s'" %vm
-			run = subprocess.check_output(command, shell=True)  # Recebe a saída do comando acima
+			run = subprocess.check_output(command, shell=True)  # Receives the output of the above command
 			vms.append(vm)
 
 		for vm in reversed(vms):
-			for i in xrange(25,-1,-1):
+			for i in xrange(60,-1,-1):
 				print "Desliga em: %3d\r"%i,
 				time.sleep(1)
 				sys.stdout.flush()
 			print 'desligando %s' %vm
-			command = "ssh user@controller '. admin-openrc && openstack server delete %s'" %vm # Comando para 
-			run = subprocess.check_output(command, shell=True)  # Recebe a saída do comando acima		
+			command = "ssh user@controller '. admin-openrc && openstack server delete %s'" %vm
+			run = subprocess.check_output(command, shell=True)  # Receives the output of the above command
 

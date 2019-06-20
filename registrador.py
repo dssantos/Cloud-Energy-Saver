@@ -23,7 +23,7 @@ def run():
 	file.close()
 
 	if len(discovered)>0:
-		print '%s Hosts registrados!'%len(discovered)
+		print '%s Registered Hosts!'%len(discovered)
 	else:
-		print '\nNenhum host foi encontrado!\n'
+		print '\nNo hosts found!\n'
 	return discovered
